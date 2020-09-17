@@ -31,27 +31,33 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Publisher penguin = new Publisher("Penguin Ltd", "10 MG Road", "Mumbai", "440032");
+        publisherRepository.save(penguin);
+
         Author sumit = new Author("Sumit", "Deo");
         Book effectiveJava = new Book("Effective Java", "123456");
         sumit.getBooks().add(effectiveJava);
         effectiveJava.getAuthors().add(sumit);
+        effectiveJava.setPublisher(penguin);
+        penguin.getBooks().add(effectiveJava);
 
         authorRepository.save(sumit);
         bookRepository.save(effectiveJava);
+        publisherRepository.save(penguin);
 
         Author sneha = new Author("Sneha", "Pimpley");
         Book dataStruct = new Book("Data Structure & Algorithm", "987654");
         sneha.getBooks().add(dataStruct);
         dataStruct.getAuthors().add(sneha);
+        dataStruct.setPublisher(penguin);
+        penguin.getBooks().add(dataStruct);
 
         authorRepository.save(sneha);
         bookRepository.save(dataStruct);
-
-        Publisher penguin = new Publisher("Penguin Ltd", "10 MG Road", "Mumbai", "440032");
         publisherRepository.save(penguin);
 
         System.out.println("Started in Bootstrap");
         System.out.println("Number of Books: " + bookRepository.count());
-        System.out.println("Number of Publishers: " + publisherRepository.count());
+        System.out.println("Number of Publishers of Books: " + penguin.getBooks().size());
     }
 }
